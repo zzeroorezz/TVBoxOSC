@@ -201,6 +201,12 @@ public class ApiConfig {
                     callback.error("");
                 }
             }
+
+            @Override
+            public void onError(Response<File> response) {
+                super.onError(response);
+                callback.error("");
+            }
         });
     }
 
@@ -231,10 +237,11 @@ public class ApiConfig {
             sb.setType(obj.get("type").getAsInt());
             sb.setApi(obj.get("api").getAsString().trim());
             sb.setSearchable(DefaultConfig.safeJsonInt(obj, "searchable", 1));
-            sb.setSearchable(DefaultConfig.safeJsonInt(obj, "quickSearch", 1));
+            sb.setQuickSearch(DefaultConfig.safeJsonInt(obj, "quickSearch", 1));
             sb.setFilterable(DefaultConfig.safeJsonInt(obj, "filterable", 1));
             sb.setPlayerUrl(DefaultConfig.safeJsonString(obj, "playUrl", ""));
             sb.setExt(DefaultConfig.safeJsonString(obj, "ext", ""));
+            sb.setCategories(DefaultConfig.safeJsonStringList(obj, "categories"));
             if (firstSite == null)
                 firstSite = sb;
             sourceBeanList.put(siteKey, sb);
@@ -272,6 +279,7 @@ public class ApiConfig {
                 setDefaultParse(parseBeanList.get(0));
         }
         // 直播源
+        channelGroupList.clear();           //修复从后台切换重复加载频道列表
         try {
             String lives = infoJson.get("lives").getAsJsonArray().toString();
             int index = lives.indexOf("proxy://");
@@ -348,7 +356,7 @@ public class ApiConfig {
                 liveChannel.setChannelName(obj.get("name").getAsString().trim());
                 liveChannel.setChannelNum(channelIndex++);
                 ArrayList<String> urls = DefaultConfig.safeJsonStringList(obj, "urls");
-                liveChannel.setUrls(urls);
+                liveChannel.setChannelUrls(urls);
                 channelGroup.getLiveChannels().add(liveChannel);
             }
             channelGroupList.add(channelGroup);
@@ -443,8 +451,12 @@ public class ApiConfig {
 
     public IJKCode getCurrentIJKCode() {
         String codeName = Hawk.get(HawkConfig.IJK_CODEC, "");
+        return getIJKCodec(codeName);
+    }
+
+    public IJKCode getIJKCodec(String name) {
         for (IJKCode code : ijkCodes) {
-            if (code.getName().equals(codeName))
+            if (code.getName().equals(name))
                 return code;
         }
         return ijkCodes.get(0);

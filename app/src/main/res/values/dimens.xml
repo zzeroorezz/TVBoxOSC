@@ -60,6 +60,7 @@
     <dimen name="vs_165">165mm</dimen>
     <dimen name="vs_170">170mm</dimen>
     <dimen name="vs_180">180mm</dimen>
+    <dimen name="vs_190">190mm</dimen>
     <dimen name="vs_200">200mm</dimen>
     <dimen name="vs_214">214mm</dimen>
     <dimen name="vs_220">220mm</dimen>
@@ -74,6 +75,7 @@
     <dimen name="vs_360">360mm</dimen>
     <dimen name="vs_390">390mm</dimen>
     <dimen name="vs_400">400mm</dimen>
+    <dimen name="vs_420">420mm</dimen>
     <dimen name="vs_440">440mm</dimen>
     <dimen name="vs_410">410mm</dimen>
     <dimen name="vs_470">470mm</dimen>
